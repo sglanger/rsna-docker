@@ -14,6 +14,9 @@ List loaded Docker images
 List running Docker processes
 >sudo docker ps
 
+STarting a docker image
+>sudo docker run --name instance_name  -e command -d docker_name 
+
 Connect to a running Docker image (in this case named "postgres")
 >sudo docker run -t -i -p 3000 postgres /bin/bash
 or

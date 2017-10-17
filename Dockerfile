@@ -11,7 +11,7 @@ MAINTAINER Steve Langer <sglanger@fastmail.COM>
 # 			
 #
 # Build with  "sudo docker build --rm=true -t ddw-gway . "
-# Run it with "sudo docker run --name ddw-gw -e POSTGRES_PASSWORD=postgres -d ddw-gway "
+# Run it with "sudo docker run --name rsna-dock -e /bin/bash -d rsna-docker "
 # Connect to above instance with "sudo docker exec -it ddw-gw /bin/bash" or "sudo docker exec -u root -it ddw-gw /bin/bash"
 # get IP of instance with "sudo docker inspect ddw-gw "
 ##############################################################
