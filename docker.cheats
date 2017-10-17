@@ -1,0 +1,65 @@
+from https://blog.openshift.com/day-21-docker-the-missing-tutorial/
+
+################## Local stuff
+Get help on DOcker command line
+>sudo docker help
+
+
+Getting info on the Docker runtime env
+>sudo docker info
+
+List loaded Docker images
+>sudo docker images
+
+List running Docker processes
+>sudo docker ps
+
+Connect to a running Docker image (in this case named "postgres")
+>sudo docker run -t -i -p 3000 postgres /bin/bash
+or
+>sudo docker exec -it -u root ddw-db /bin/bash
+
+
+Commit changes on a Docker Image (in this case the image name is ddw-docker-dbase)
+>sudo docker commit imageID dockerHubAcct/ddw-docker-dbase
+
+Building a new image from a local DOckerFile
+> sudo docker build --rm -t tag-name .
+
+Exporting or importing a Docker image
+https://www.jamescoyle.net/how-to/1512-export-and-import-a-docker-image-between-nodes
+
+
+#################### Docker Hub commands
+Login to DockerHub
+>sudo docker login
+
+Push committed Docker image to Docker Hub
+>sudo docker push dockerHubAcct/ddw-docker-dbase
+
+Pulling an image
+>sudo docker pull dockerHubAcct/imageName
+
+################### Dockerfile syntax
+https://docs.docker.com/engine/reference/builder/
+and
+http://blog.flux7.com/blogs/docker/docker-tutorial-series-part-3-automation-is-the-word-using-dockerfile
+and
+http://blog.flux7.com/blogs/docker/docker-commands
+and
+https://github.com/wsargent/docker-cheat-sheet
+
+
+################## Managing local file permissions
+http://stackoverflow.com/questions/23544282/what-is-the-best-way-to-manage-permissions-for-docker-shared-volumes
+
+#################### Docker Run refernce (including Netowrking)
+https://docs.docker.com/engine/reference/run/#network-settings
+
+# use this to expose the DOcker ports on the host NIC (make sure host is not using the same ports)
+sudo docker run --net="host" --name ddw-db -e POSTGRES_PASSWORD=postgres -d ddw-dbase
+
+
+
+
+

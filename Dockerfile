@@ -1,11 +1,11 @@
-from centos: latest
+from centos:latest
+
 
 MAINTAINER Steve Langer <sglanger@fastmail.COM>
 ###############################################################
-# ddw-docker-GWAY
+# rsna-docker
 # Purpose: provide a runtime envornment for rnsa XXX
-# 	inspired by 	
-# 	and 		
+# 	inspired by https://github.com/jdeathe/centos-ssh/blob/centos-6/Dockerfile 		
 #
 # External Dependencies: all the "ADD" files below and
 # 			
@@ -18,5 +18,11 @@ MAINTAINER Steve Langer <sglanger@fastmail.COM>
 
 
 CMD ["/bin/bash"]
-run yum install nano
+run yum -y install nano
+run yum -y install openssh
+run yum -y install java
+
+expose 22
+
+run sshd
 

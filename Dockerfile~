@@ -1,14 +1,14 @@
-from centos: latest
+from centos:latest
+
 
 MAINTAINER Steve Langer <sglanger@fastmail.COM>
 ###############################################################
-# ddw-docker-GWAY
-# Purpose: SGL extensions to postgresql for DDW
-# 	inspired by 	https://docs.docker.com/engine/examples/postgresql_service/
-# 	and 		https://hub.docker.com/_/postgres/
+# rsna-docker
+# Purpose: provide a runtime envornment for rnsa XXX
+# 	inspired by https://github.com/jdeathe/centos-ssh/blob/centos-6/Dockerfile 		
 #
 # External Dependencies: all the "ADD" files below and
-# 			run_ddw_gw.sh 	and 			Docker ddw-db
+# 			
 #
 # Build with  "sudo docker build --rm=true -t ddw-gway . "
 # Run it with "sudo docker run --name ddw-gw -e POSTGRES_PASSWORD=postgres -d ddw-gway "
@@ -18,5 +18,11 @@ MAINTAINER Steve Langer <sglanger@fastmail.COM>
 
 
 CMD ["/bin/bash"]
-run yum install nano
+run yum -y install nano
+run yum -y install openssh
+run yum -y install jdk1.8
+
+expose 22
+
+run sshd
 
