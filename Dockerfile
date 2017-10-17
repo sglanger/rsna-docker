@@ -42,5 +42,5 @@ EXPOSE 2022
 
 
 # STEP yy: Set the default command to run when starting the container
-CMD ["/usr/bin/supervisord", "--configuration=/etc/supervisord.conf"]
-
+#CMD ["/usr/bin/supervisord", "--configuration=/etc/supervisord.conf"]
+CMD ["/bin/bash"]

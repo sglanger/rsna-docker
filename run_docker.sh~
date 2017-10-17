@@ -41,13 +41,11 @@ case "$1" in
 	;;
 
 	conn)
-		# connect to a  runnung docker
 		sudo docker exec -it $instance /bin/bash 
 	;;
 
 
 	conn_r)
-		# connect as root to a  runnung docker
 		sudo docker exec -u root -it $instance /bin/bash
 	;;
 
