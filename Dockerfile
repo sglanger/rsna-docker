@@ -233,12 +233,13 @@ run yum -y install java
 run yum -y install nmap
 
 # Add user specfific exes
+# these fake files will need to be altered to real, see http://supervisord.org/running.html#adding-a-program
 ADD fake.jar /usr/local/bin
 ADD fake.conf fake.env /etc/services-config/fake/
 EXPOSE 4567
 
 # Move docker SSH to a port that won't kill host ssh
-#RUN echo "Port 2022" >> /etc/ssh/ssh_config 
-#EXPOSE 2022		# unprived port for ssh
+RUN echo "Port 2022" >> /etc/services-config/ssh/sshd_config
+EXPOSE 2022		
 
 CMD ["/usr/bin/supervisord", "--configuration=/etc/supervisord.conf"]
