@@ -1,0 +1,70 @@
+from centos:centos6.9
+
+
+MAINTAINER Steve Langer <sglanger@fastmail.COM>
+###############################################################
+# rsna-docker
+# Purpose: provide a runtime envornment for running arbitrary apps on
+#		a RHEL family VM. To enable multiple apps, we use supervisord
+#
+#
+# 	inspired by https://github.com/jdeathe/centos-ssh/blob/centos-6/Dockerfile 		
+#
+# External Dependencies: all the "ADD" files below and
+#		run_docker.sh	== a script to automate built/test/cleam cycle
+# 		docker_cheats	= a handy reference for docker comannd examples
+#	
+# Terms:
+#	dockerX = the name of the built DOcker image
+#	img-dock = 	the name of a running instance of "docker"
+#
+# Cheats:
+# 	Build with  "sudo docker build --rm=true -t dockerX . "
+# 	Run with "sudo docker run --name img-dock  -d dockerX "
+# 	Connect to instance with "sudo docker exec -it img-dock /bin/bash" or "sudo docker exec -u root -it img-dock /bin/bash"
+# 	get IP of instance with "sudo docker inspect img-dock "
+##############################################################
+
+# standard tools
+run yum -y install nano
+#run yum -y install openssh
+run yum -y install java
+run yum -y install epel-release
+#run yum -y install python-setuptools	# provides easy_install
+ENV TERM xterm
+
+# -----------------------------------------------------------------------------
+# Install supervisord (required to run more than a single process in a container)
+# Note: EPEL package lacks /usr/bin/pidproxy
+# We require supervisor-stdout to allow output of services started by 
+# supervisord to be easily inspected with "docker logs".
+# -----------------------------------------------------------------------------
+#RUN  easy_install \
+#		'supervisor == 3.3.3' \
+#		'supervisor-stdout == 0.1.1' \
+#	&& mkdir -p \
+#	/var/log/supervisor/
+
+# -----------------------------------------------------------------------------
+# UTC Timezone & Networking
+# -----------------------------------------------------------------------------
+RUN ln -sf \
+		/usr/share/zoneinfo/UTC \
+		/etc/localtime \
+	&& echo "NETWORKING=yes" > /etc/sysconfig/network
+
+
+# -----------------------------------------------------------------------------
+# Add user apps from the filesystem
+# -----------------------------------------------------------------------------
+ADD fake.jar /
+EXPOSE 4567
+
+
+# Expose needed ports	
+#EXPOSE 2022				# a non-privealged port for ssh access
+
+
+# STEP yy: Set the default command to run when starting the container
+#CMD ["/usr/bin/supervisord", "--configuration=/etc/supervisord.conf"]
+CMD ["/bin/bash"]
