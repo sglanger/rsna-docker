@@ -21,6 +21,7 @@ host="127.0.0.1"
 image="rsna-docker"
 instance="rsna-dock"
 
+
 case "$1" in
 	build)
 		# first clean up if any running instance
@@ -37,7 +38,6 @@ case "$1" in
 		sudo docker run --net="host" --name $instance  -d $image
 		sleep 3
 		sudo docker ps
-		sudo docker exec  $instance /bin/bash
 	;;
 
 	conn)

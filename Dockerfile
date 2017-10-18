@@ -4,25 +4,34 @@ from centos:centos6.9
 MAINTAINER Steve Langer <sglanger@fastmail.COM>
 ###############################################################
 # rsna-docker
-# Purpose: provide a runtime envornment for rnsa XXX
+# Purpose: provide a runtime envornment for running arbitrary apps on
+#		a RHEL family VM. To enable multiple apps, we use supervisord
+#
+#
 # 	inspired by https://github.com/jdeathe/centos-ssh/blob/centos-6/Dockerfile 		
 #
 # External Dependencies: all the "ADD" files below and
-# 			
+#		run_docker.sh	== a script to automate built/test/cleam cycle
+# 		docker_cheats	= a handy reference for docker comannd examples
+#	
+# Terms:
+#	dockerX = the name of the built DOcker
+#	img-dock = 	the name of a running instance of "docker"
 #
-# Build with  "sudo docker build --rm=true -t ddw-gway . "
-# Run it with "sudo docker run --name rsna-dock -e /bin/bash -d rsna-docker "
-# Connect to above instance with "sudo docker exec -it ddw-gw /bin/bash" or "sudo docker exec -u root -it ddw-gw /bin/bash"
-# get IP of instance with "sudo docker inspect ddw-gw "
+# Cheats:
+# 	Build with  "sudo docker build --rm=true -t dockerX . "
+# 	Run with "sudo docker run --name img-dock  -d dockerX "
+# 	Connect to instance with "sudo docker exec -it img-dock /bin/bash" or "sudo docker exec -u root -it img-dock /bin/bash"
+# 	get IP of instance with "sudo docker inspect img-dock "
 ##############################################################
 
-
-CMD ["/bin/bash"]
+# standard tools
 run yum -y install nano
 run yum -y install openssh
 run yum -y install java
 run yum -y install epel-release
 run yum -y install python-setuptools	# provides easy_install
+ENV TERM xterm
 
 # -----------------------------------------------------------------------------
 # Install supervisord (required to run more than a single process in a container)
@@ -36,9 +45,13 @@ RUN  easy_install \
 	&& mkdir -p \
 	/var/log/supervisor/
 
+# Add user apps from the filesystem
+ADD fake.jar /
+EXPOSE 4567
 
-# STEP xx: Expose a non-privealged port for ssh access
-EXPOSE 2022
+
+# Expose needed ports	
+#EXPOSE 2022				# a non-privealged port for ssh access
 
 
 # STEP yy: Set the default command to run when starting the container
