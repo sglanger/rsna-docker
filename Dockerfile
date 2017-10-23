@@ -1,4 +1,4 @@
-FROM centos:centos6.9
+FROM centos:centos7.4.1708
 
 
 MAINTAINER Steve Langer <sglanger@fastmail.COM>
@@ -26,7 +26,7 @@ MAINTAINER Steve Langer <sglanger@fastmail.COM>
 ##############################################################
 
 
-# From here until about line 224 is all the base DOcker
+# From here until about line 215 is all the base DOcker
 # We take over user custmizzation from there
 
 # -----------------------------------------------------------------------------
@@ -34,9 +34,9 @@ MAINTAINER Steve Langer <sglanger@fastmail.COM>
 # -----------------------------------------------------------------------------
 RUN rpm --rebuilddb \
 	&& rpm --import \
-		http://mirror.centos.org/centos/RPM-GPG-KEY-CentOS-6 \
+		http://mirror.centos.org/centos/RPM-GPG-KEY-CentOS-7 \
 	&& rpm --import \
-		https://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-6 \
+		https://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-7 \
 	&& rpm --import \
 		https://dl.iuscommunity.org/pub/ius/IUS-COMMUNITY-GPG-KEY \
 	&& yum -y install \
@@ -45,36 +45,26 @@ RUN rpm --rebuilddb \
 		centos-release-scl \
 		centos-release-scl-rh \
 		epel-release \
-		https://centos6.iuscommunity.org/ius-release.rpm \
-		openssh-5.3p1-123.el6_9 \
-		openssh-clients-5.3p1-123.el6_9 \
-		openssh-server-5.3p1-123.el6_9 \
-		python-setuptools-0.6.10-3.el6 \
-		sudo-1.8.6p3-29.el6_9 \
-		vim-minimal-7.4.629-5.el6_8.1 \
-		yum-plugin-versionlock-1.1.30-40.el6 \
-		xz-4.999.9-0.5.beta.20091007git.el6.x86_64 \
+		https://centos7.iuscommunity.org/ius-release.rpm \
+		openssh-7.4p1-12.el7_4 \
+		openssh-server-7.4p1-12.el7_4 \
+		openssh-clients-7.4p1-12.el7_4 \
+		openssl-1.0.2k-8.el7 \
+		python-setuptools-0.9.8-7.el7 \
+		sudo-1.8.19p2-11.el7_4 \
+		vim-minimal-7.4.160-2.el7 \
+		yum-plugin-versionlock-1.1.31-42.el7 \
+		xz-5.2.2-1.el7 \
 	&& yum versionlock add \
 		openssh \
-		openssh-clients \
 		openssh-server \
+		openssh-clients \
 		python-setuptools \
 		sudo \
 		vim-minimal \
 		yum-plugin-versionlock \
 		xz \
-	&& rpm -e --nodeps \
-		hwdata \
-		iptables \
-		plymouth \
-		policycoreutils \
-		sysvinit-tools \
 	&& yum clean all \
-	&& find /usr/share \
-		-type f \
-		-regextype posix-extended \
-		-regex '.*\.(jpg|png)$' \
-		-delete \
 	&& rm -rf /etc/ld.so.cache \
 	&& rm -rf /sbin/sln \
 	&& rm -rf /usr/{{lib,share}/locale,share/{man,doc,info,cracklib,i18n},{lib,lib64}/gconv,bin/localedef,sbin/build-locale-archive} \
@@ -165,7 +155,7 @@ RUN mkdir -p \
 	&& chmod 700 \
 		/usr/{bin/healthcheck,sbin/{scmi,sshd-{bootstrap,wrapper}}}
 
-
+EXPOSE 22
 
 # -----------------------------------------------------------------------------
 # Set default environment variables
@@ -187,7 +177,7 @@ ENV SSH_AUTHORIZED_KEYS="" \
 # -----------------------------------------------------------------------------
 # Set image metadata
 # -----------------------------------------------------------------------------
-ARG RELEASE_VERSION="1.8.2"
+ARG RELEASE_VERSION="2.3.0"
 LABEL \
 	maintainer="James Deathe <james.deathe@gmail.com>" \
 	install="docker run \
@@ -216,13 +206,13 @@ jdeathe/centos-ssh:${RELEASE_VERSION} \
 	org.deathe.license="MIT" \
 	org.deathe.vendor="jdeathe" \
 	org.deathe.url="https://github.com/jdeathe/centos-ssh" \
-	org.deathe.description="CentOS-6 6.9 x86_64 - SCL, EPEL and IUS Repositories / Supervisor / OpenSSH."
+	org.deathe.description="CentOS-7 7.4.1708 x86_64 - SCL, EPEL and IUS Repositories / Supervisor / OpenSSH."
 
 HEALTHCHECK \
 	--interval=0.5s \
 	--timeout=1s \
 	--retries=5 \
-	CMD ["/usr/bin/healthcheck"]
+CMD ["/usr/bin/healthcheck"]
 
 
 ##########################	 Langer: now we take control ####################
